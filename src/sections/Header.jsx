@@ -37,7 +37,7 @@ export default function Header() {
     <header
       className={clsx(
         "fixed top-0 left-0 z-50 w-full py-10 transition-background-color duration-300",
-        hasScrolled && "bg-s2 shadow-500 py-5"
+        hasScrolled && " bg-black-100 backdrop-blur-[8px] py-5"
       )}
     >
       <div className="container flex h-14 items-center max-lg:px-5">
