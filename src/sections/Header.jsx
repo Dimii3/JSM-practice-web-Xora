@@ -1,23 +1,48 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link as LinkScroll } from "react-scroll";
 
 function NavLink({ title }) {
   return (
-    <LinkScroll className="base-bold text-p4 uppercase transition-colors duration-300 cursor-pointer hover:text-p1 max-lg:my-4 max-lg:h5">
+    <LinkScroll
+      to={title}
+      offset={-240}
+      spy
+      smooth
+      activeClass="nav-active"
+      className="base-bold text-p4 uppercase transition-colors duration-300 cursor-pointer hover:text-p1 max-lg:my-4 max-lg:h5"
+    >
       {title}
     </LinkScroll>
   );
 }
 
 export default function Header() {
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 32);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasScrolled]);
+
   return (
-    <header className="fixed top-0 left-0 z-50 w-full py-10">
+    <header
+      className={clsx(
+        "fixed top-0 left-0 z-50 w-full py-10 transition-background-color duration-300",
+        hasScrolled && "bg-s2 shadow-500 py-5"
+      )}
+    >
       <div className="container flex h-14 items-center max-lg:px-5">
         <a className="lg:hidden flex-1 cursor-pointer z-2">
-          <img src="../src/assets/images/xora.svg" alt="" />
+          <img src="../src/assets/images/xora.svg" alt="logo" />
         </a>
 
         <div
@@ -30,18 +55,19 @@ export default function Header() {
             <nav className="max-lg:relative max-lg:z-2 max-lg:my-auto">
               <ul className="flex max-lg:block max-lg:px-12">
                 <li className="nav-li">
-                  <NavLink title="Features"></NavLink>
+                  <NavLink title="features"></NavLink>
                   <div className="dot"></div>
-                  <NavLink title="Pricing"></NavLink>
+                  <NavLink title="pricing"></NavLink>
                 </li>
                 <li className="nav-logo">
                   <LinkScroll
                     to="hero"
-                    offset={-100}
+                    offset={-240}
                     spy
                     smooth
                     className={clsx(
-                      "max-lg:hidden transition-transform duration-300"
+                      "max-lg:hidden transition-transform duration-300 cursor-pointer",
+                      hasScrolled && "transform scale-90"
                     )}
                   >
                     <img
@@ -53,9 +79,9 @@ export default function Header() {
                   </LinkScroll>
                 </li>
                 <li className="nav-li">
-                  <NavLink title="FAQ"></NavLink>
+                  <NavLink title="faq"></NavLink>
                   <div className="dot"></div>
-                  <NavLink title="Download"></NavLink>
+                  <NavLink title="download"></NavLink>
                 </li>
               </ul>
             </nav>
